@@ -1,0 +1,40 @@
+---
+title: "Exercise 6"
+author: '[Your first name] [Your last name]'
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    number_sections: true
+    toc: true
+    toc_float: true
+    toc_depth: 3
+    code_folding: hide
+---
+
+**For this week's assignment, I'll guide you through:**
+
+* **The construction of a cause-deleted life table**
+* **The decomposition of a difference between life expectancies into age- and cause-specific components**
+
+**For the cause-deleted life table, you'll use the data from Russia in 1997 that we used in Exercise 5.**
+
+**For the life expectancy difference decomposition, you'll compare Russia to Japan in 1997.**
+
+**For this assignment, we're going to go on this journey together, so you can learn the ropes. But follow along closely... because you'llbe  on your own doing similar tasks for the final!**
+
+**Let's do this.**
+
+# Setup {.unnumbered}
+
+```{r setup}
+if (!require("pacman")) install.packages("pacman")
+# p_load function loads packages if installed, or install then loads otherwise
+pacman::p_load(dplyr, ggplot2, knitr, kableExtra, readr)
+```
+
+# Data collection {.unnumbered}
+
+```{r data-collection}
+
+```
+
