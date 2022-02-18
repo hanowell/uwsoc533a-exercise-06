@@ -8,7 +8,6 @@ output:
     toc: true
     toc_float: true
     toc_depth: 3
-    code_folding: hide
 ---
 
 **For this week's assignment, I'll guide you through:**
@@ -35,6 +34,85 @@ pacman::p_load(dplyr, ggplot2, knitr, kableExtra, readr)
 # Data collection {.unnumbered}
 
 ```{r data-collection}
+repo_url <- "https://github.com/hanowell/uwsoc533a-exercise-06"
+rus_mxi <- readRDS(url(paste0(repo_url, "/blob/main/data/rus_mxi.rds?raw=true")))
+jpn_mxi <- readRDS(url(paste0(repo_url, "/blob/main/data/jpn_mxi.rds?raw=true")))
+```
 
+# About the data {.unnumbered}
+
+**You've just loaded age- and cause-specific mortality rates for Russia (`rus_mxi`) and Japan (`jpn_mxi`) in 1997. The data comes from the [Human Cause of Death Database](https://www.causesofdeath.org/cgi-bin/country.php?country=RUS). Specifically, I took the age-specific death rates for the so-called [short list](https://www.causesofdeath.org/docs/short_list.pdf) of causes of death. Then I differentiated heart disease mortality from all other causes.**
+
+**The tables for both countries, respectively, have the following structure:**
+
+* `x`**: the exact age at the beginning of the age group**
+* `mx_heart`**: age-specific heart disease mortality rate per person-year**
+* `mx_other`**: age-specific mortality rate due to all other causes, again per person-year**
+
+# Construct a cause-deleted life table
+
+**In this section, I'll guide you through the construction of a cause-deleted life table for Russia in 1997.**
+
+## Preliminary basic question about cause-deleted life table goal
+
+**Recall the definition of a cause-deleted life table that we covered in class, available in the link below:**
+
+https://hanowell.github.io/uwsoc533a/multiple-decrement-processes.html#associated-single-decrement-tables-from-period-data
+
+**Given this definition, which of the cause-specific mortality rates in `rus_mxi` will our cause-deleted life table use when constructed our associated decrement table?**
+
+**Answer below:**
+
+
+
+**What hypothetical scenario will this cause-deleted life table help us to understand?**
+
+**Answer below:**
+
+
+
+## Evaluate the tenability of the proportional hazards assumption
+
+**To construct our cause-deleted life table, we'll employ the proportional hazards assumption to address the challenge that $_n^*m_x^i$ (the cause-specific mortality schedule under the cause-deleted life table's hypothetical scenario) is not equal to $_nm_x^i$ (the observed age-specific decrement rate schedule) since the former removes all competing risks while the latter does not.**
+
+**Remember, the proportional hazards assumption assumes that -- within an age interval --- there is a constant of proportionality $R^i$ between a cause-specific decrement rate $_n^*m_x^i$ and the all-cause decrement rate $_nm_x$.**
+
+**Below is a plot of the cause-specific mortality rate from heart disease and the all-cause age-specific mortality rate. Based on this plot, over what age ranges is the proportional hazards assumption most suspect and why?**
+
+**Answer below:**
+
+
+
+****
+
+```{r rus_mxi_plot, echo=FALSE, warning=FALSE, message=FALSE}
+rus_mxi %>%
+  ggplot2::ggplot() +
+  ggplot2::aes(x = x) +
+  ggplot2::geom_line(aes(y = mx_heart + mx_other), color = "black") +
+  ggplot2::geom_point(aes(y = mx_heart + mx_other), color = "black") +
+  ggplot2::geom_line(aes(y = mx_heart), color = "darkorange") +
+  ggplot2::geom_point(aes(y = mx_heart), color = "darkorange") + 
+  ggplot2::annotate(
+    geom = "text",
+    x = 50, y = 0.025,
+    label = "All causes",
+    color = "black"
+  ) +
+  ggplot2::annotate(
+    geom = "text",
+    x = 60, y = 0,
+    label = "Heart disease",
+    color = "darkorange"
+  ) +
+  ggplot2::scale_x_continuous(breaks = rus_mxi$x, labels = rus_mxi$x) +
+  ggplot2::labs(
+    title = "Cause- and age-specific mortality rates in 1997 Russia",
+    x = "Exact age",
+    y = "Age-specific\nmortality rate"
+  ) +
+  ggplot2::theme_minimal() +
+  ggplot2::theme(panel.grid = element_blank(),
+                 axis.title.y = element_text(angle = 0))
 ```
 
